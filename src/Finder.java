@@ -85,7 +85,6 @@ public class Finder
         return INVALID;
     }
 
-
     // Helper method I made that hashes a single string using the Rabin-Karp algorithm.
     private static int hashSingleString(String str)
     {
