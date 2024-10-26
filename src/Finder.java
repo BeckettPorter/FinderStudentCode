@@ -10,63 +10,78 @@ import java.util.ArrayList;
  * At Menlo School in Atherton, CA
  *
  * Completed by: Beckett Porter
+ * Completed on: October 26th 2024
  **/
 
-public class Finder {
-
+public class Finder
+{
+    // Variables.
     private static final String INVALID = "INVALID KEY";
     private static final int PRIME = 999983;
     private static final int RADIX = 256;
     private ArrayList<KeyValueEntry>[] ar = new ArrayList[1000000];
 
+    // Constructor.
     public Finder()
     {
         // Initialize ar with arrayLists.
-        for (int i = 0; i < ar.length; i++) {
+        for (int i = 0; i < ar.length; i++)
+        {
             ar[i] = new ArrayList<>();
         }
     }
 
+    // Build table method which initializes the ar array with the correct KeyValueEntries.
     public void buildTable(BufferedReader br, int keyCol, int valCol) throws IOException
     {
-        String entireString;
+        String currentRow;
 
-        while ((entireString = br.readLine()) != null)
+        // While there are still lines to be read in the file:
+        while ((currentRow = br.readLine()) != null)
         {
-            String[] columns = entireString.split(",");
+            // Separate the current row by commas.
+            String[] columns = currentRow.split(",");
 
+            // Get the currentKeys and currentVals at the keyCol and valCol.
             String currentKey = columns[keyCol];
             String currentVal = columns[valCol];
 
+            // Add a new KeyValueEntry at the corresponding key ArrayList
             ar[hashSingleString(currentKey)].add(new KeyValueEntry(currentKey, currentVal));
         }
         br.close();
     }
 
+    // Query method which takes in a key and returns the corresponding value.
     public String query(String key) throws IOException
     {
+        // Get the value of the key as a hash.
         int hashedKey = hashSingleString(key);
 
+        // Variable for the current location in the array (an ArrayList).
         ArrayList<KeyValueEntry> currentArLocation = ar[hashedKey];
 
-        if (ar[hashedKey].size() > 1)
+        // If the current ArrayList has more than one entry (ie. there was a collision), go and manually check.
+        if (currentArLocation.size() > 1)
         {
-            for (int i = 0; i < ar[hashedKey].size(); i++)
+            // Go through each KeyValueEntry in the current ArrayList.
+            for (KeyValueEntry currentEntry : currentArLocation)
             {
-                KeyValueEntry currentEntry = currentArLocation.get(i);
-
+                // If the currentEntry's key is equal to out desired key, return the corresponding value.
                 if (currentEntry.getKey().equals(key))
                 {
                     return currentEntry.getValue();
                 }
             }
         }
+        // Else if the ArrayList only has one entry, just return the first KeyValueEntry's value.
         else if (!currentArLocation.isEmpty())
         {
             return currentArLocation.getFirst().getValue();
         }
 
-
+        // If no entries were in the ArrayList, return INVALID. (ie. the key that was passed in
+        // doesn't exist in the file).
         return INVALID;
     }
 
