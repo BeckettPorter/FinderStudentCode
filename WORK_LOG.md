@@ -1,9 +1,10 @@
 Name: YOUR NAME HERE
 
-| Date    |  Time  |                                     Update |
-|:--------|:------:|-------------------------------------------:|
-| April 5 | 9-10pm | I tried to write abstract, efficient code. |
-|         |        |                                            |
+| Date         |    Time     |                                                                                                                                                                                                                                                                                                                                                           Update |
+|:-------------|:-----------:|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
+| April 5      |   9-10pm    |                                                                                                                                                                                                                                                                                                                       I tried to write abstract, efficient code. |
+| October 25th | 2:40 - 3:00 |                    I began thinking about how I could approach the problem, I ended up deciding on making a large array where the indexes correspond to hashed values, and this array is made of arrayLists of strings. Then, I can go into the arrayList at the hashed value index and iteratively check to see which is the correct value to avoid collisions. |
+| October 25th | 5:25 - 6:20 | I worked on implementing this idea, so far it is not working and I keep getting null values, I think I might have something wrong with my hashing. UPDATE: Ok so I think I actually just figured it out. I made a KeyValueEntry class which has each key and the corresponding value in it to check during the issue with collisions and this actually fixed it. |
 
 
 To add a new row to the table, click into a cell and then hit shift-enter.
