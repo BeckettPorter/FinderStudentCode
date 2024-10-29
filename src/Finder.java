@@ -19,16 +19,12 @@ public class Finder
     private static final String INVALID = "INVALID KEY";
     private static final int PRIME = 999983;
     private static final int RADIX = 256;
-    private ArrayList<KeyValueEntry>[] ar = new ArrayList[1000000];
+    private ArrayList<KeyValueEntry>[] ar = new ArrayList[PRIME];
 
     // Constructor.
     public Finder()
     {
-        // Initialize ar with arrayLists.
-        for (int i = 0; i < ar.length; i++)
-        {
-            ar[i] = new ArrayList<>();
-        }
+
     }
 
     // Build table method which initializes the ar array with the correct KeyValueEntries.
@@ -46,8 +42,15 @@ public class Finder
             String currentKey = columns[keyCol];
             String currentVal = columns[valCol];
 
+            int hashedIndex = hashSingleString(currentKey);
+
+            if (ar[hashedIndex] == null)
+            {
+                ar[hashedIndex] = new ArrayList<>();
+            }
+
             // Add a new KeyValueEntry at the corresponding key ArrayList
-            ar[hashSingleString(currentKey)].add(new KeyValueEntry(currentKey, currentVal));
+            ar[hashedIndex].add(new KeyValueEntry(currentKey, currentVal));
         }
         br.close();
     }
@@ -61,7 +64,13 @@ public class Finder
         // Variable for the current location in the array (an ArrayList).
         ArrayList<KeyValueEntry> currentArLocation = ar[hashedKey];
 
-        // If the current ArrayList has more than one entry (ie. there was a collision), go and manually check.
+        // If the location at the index hashedString in the array is empty, this means the key is not valid.
+        if (currentArLocation == null)
+        {
+            return INVALID;
+        }
+
+        // If the current ArrayList has more than one entry (i.e. there was a collision), go and manually check.
         if (currentArLocation.size() > 1)
         {
             // Go through each KeyValueEntry in the current ArrayList.
