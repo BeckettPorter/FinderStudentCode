@@ -2,6 +2,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.security.Key;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 
 /**
  * Finder
@@ -17,15 +19,12 @@ public class Finder
 {
     // Variables.
     private static final String INVALID = "INVALID KEY";
-    private static final int PRIME = 999983;
+    private static final int PRIME = 1036039;
     private static final int RADIX = 256;
-    private ArrayList<KeyValueEntry>[] ar = new ArrayList[PRIME];
+    private Queue<KeyValueEntry>[] ar = new LinkedList[PRIME];
 
     // Constructor.
-    public Finder()
-    {
-
-    }
+    public Finder() {}
 
     // Build table method which initializes the ar array with the correct KeyValueEntries.
     public void buildTable(BufferedReader br, int keyCol, int valCol) throws IOException
@@ -46,10 +45,10 @@ public class Finder
 
             if (ar[hashedIndex] == null)
             {
-                ar[hashedIndex] = new ArrayList<>();
+                ar[hashedIndex] = new LinkedList<>();
             }
 
-            // Add a new KeyValueEntry at the corresponding key ArrayList
+            // Add a new KeyValueEntry at the corresponding key queue.
             ar[hashedIndex].add(new KeyValueEntry(currentKey, currentVal));
         }
         br.close();
@@ -61,8 +60,8 @@ public class Finder
         // Get the value of the key as a hash.
         int hashedKey = hashSingleString(key);
 
-        // Variable for the current location in the array (an ArrayList).
-        ArrayList<KeyValueEntry> currentArLocation = ar[hashedKey];
+        // Variable for the current location in the array (a queue).
+        Queue<KeyValueEntry> currentArLocation = ar[hashedKey];
 
         // If the location at the index hashedString in the array is empty, this means the key is not valid.
         if (currentArLocation == null)
@@ -70,10 +69,10 @@ public class Finder
             return INVALID;
         }
 
-        // If the current ArrayList has more than one entry (i.e. there was a collision), go and manually check.
+        // If the current queue has more than one entry (i.e. there was a collision), go and manually check.
         if (currentArLocation.size() > 1)
         {
-            // Go through each KeyValueEntry in the current ArrayList.
+            // Go through each KeyValueEntry in the current queue.
             for (KeyValueEntry currentEntry : currentArLocation)
             {
                 // If the currentEntry's key is equal to out desired key, return the corresponding value.
@@ -83,13 +82,13 @@ public class Finder
                 }
             }
         }
-        // Else if the ArrayList only has one entry, just return the first KeyValueEntry's value.
+        // Else if the queue only has one entry, just return the first KeyValueEntry's value.
         else if (!currentArLocation.isEmpty())
         {
-            return currentArLocation.getFirst().getValue();
+            return currentArLocation.peek().getValue();
         }
 
-        // If no entries were in the ArrayList, return INVALID. (ie. the key that was passed in
+        // If no entries were in the queue, return INVALID. (i.e. the key that was passed in
         // doesn't exist in the file).
         return INVALID;
     }
