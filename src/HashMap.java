@@ -33,7 +33,7 @@ public class HashMap
         return hashMap[currentIndex].getValue();
     }
 
-    public void addPair(String key, String value)
+    public void addPair(String key, String value, boolean wasPreviouslyHashed)
     {
         // Check if the table needs to be increased in size.
         if (++totalFilledSlots > (tableSize / 2))
@@ -50,7 +50,12 @@ public class HashMap
 
         KeyValueEntry keyToAdd = new KeyValueEntry(key, value);
         hashMap[currentProbeIndex] = keyToAdd;
-        previouslyHashed.add(keyToAdd);
+
+        if (!wasPreviouslyHashed)
+        {
+            previouslyHashed.add(keyToAdd);
+        }
+
     }
 
     private void resizeTable(int newSize)
@@ -60,7 +65,7 @@ public class HashMap
 
         for (KeyValueEntry pair : previouslyHashed)
         {
-            hashMap[hashSingleString(pair.getKey())] = pair;
+            addPair(pair.getKey(), pair.getValue(), true);
         }
     }
 

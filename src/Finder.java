@@ -33,7 +33,7 @@ public class Finder
             String currentVal = columns[valCol];
 
             // Add a key and value pair to the hashMap.
-            hashMap.addPair(currentKey, currentVal);
+            hashMap.addPair(currentKey, currentVal, false);
         }
         br.close();
     }
