@@ -3,7 +3,7 @@ import java.util.ArrayList;
 public class HashMap
 {
     // Instance Variables
-    private static final int DEFAULT_TABLE_SIZE = 100000;
+    private static final int DEFAULT_TABLE_SIZE = 50000;
     private static final int RADIX = 256;
     private static final String INVALID = "INVALID KEY";
     private int tableSize;
