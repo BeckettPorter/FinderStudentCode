@@ -8,16 +8,17 @@ import java.io.IOException;
  * At Menlo School in Atherton, CA
  *
  * Completed by: Beckett Porter
- * Completed on: October 26th 2024
+ * Completed on: November 5th 2024
  **/
 
 public class Finder
 {
+    // Create a final HashMap variable since it will never change.
     private final HashMap hashMap = new HashMap();
-    // Constructor.
+
     public Finder() {}
 
-    // Build table method which initializes the ar array with the correct KeyValueEntries.
+    // Build table method which initializes the hash map with the correct KeyValueEntries.
     public void buildTable(BufferedReader br, int keyCol, int valCol) throws IOException
     {
         String currentRow;
@@ -38,7 +39,7 @@ public class Finder
         br.close();
     }
 
-    // Query method which takes in a key and returns the corresponding value.
+    // Query method which takes in a key and returns the corresponding value, returns "INVALID KEY" if not found.
     public String query(String key) throws IOException
     {
         return hashMap.findValue(key);

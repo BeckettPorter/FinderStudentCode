@@ -2,6 +2,7 @@ import java.util.ArrayList;
 
 public class HashMap
 {
+    // Instance Variables
     private static final int DEFAULT_TABLE_SIZE = 100000;
     private static final int RADIX = 256;
     private static final String INVALID = "INVALID KEY";
@@ -10,6 +11,7 @@ public class HashMap
     private KeyValueEntry[] hashMap;
     private final ArrayList<KeyValueEntry> previouslyHashed = new ArrayList<>();
 
+    // Zero Argument Constructor.
     public HashMap()
     {
         hashMap = new KeyValueEntry[DEFAULT_TABLE_SIZE];
@@ -26,6 +28,7 @@ public class HashMap
         {
             return INVALID;
         }
+
         return hashMap[keyLocation].getValue();
     }
 
@@ -34,6 +37,9 @@ public class HashMap
     {
         int currentIndex = hashSingleString(key);
 
+        // Start at the hashed value of the key in the array and continue incrementing
+        // by 1 until either a value or null is found. Wrap around (modulo by tableSize) if it would
+        // go out of bounds of the array.
         while (hashMap[currentIndex] != null)
         {
             if (hashMap[currentIndex].getKey().equals(key))
@@ -54,9 +60,13 @@ public class HashMap
             resizeTable(tableSize * 2);
         }
 
+        // Make a KeyValueEntry for the new key to be added.
         KeyValueEntry keyToAdd = new KeyValueEntry(key, value);
+
+        // Set the next open table location starting at the hashed value of the key to the new KeyValueEntry.
         hashMap[findOpenTableLocation(key)] = keyToAdd;
 
+        // If the key hasn't already been added to the previouslyHashed arrayList, add it now.
         if (!wasPreviouslyHashed)
         {
             previouslyHashed.add(keyToAdd);
@@ -66,9 +76,11 @@ public class HashMap
     // Method to resize the table array and rehash previously added values.
     private void resizeTable(int newSize)
     {
+        // Create a new resized array and set the tableSize variable to this new size.
         hashMap = new KeyValueEntry[newSize];
         tableSize = newSize;
 
+        // Go through each previously hashed KeyValueEntry, hash it, and add it to the newly resized array.
         for (KeyValueEntry pair : previouslyHashed)
         {
             addPair(pair.getKey(), pair.getValue(), true);
